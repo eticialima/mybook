@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Delete Author{% endblock %}
+{% block content %} 
+<div class="col-md-6">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <button type="submit" class="btn btn-danger" value="Confirm">Save</button>
+    </form>
+</div> 
+{% endblock %}

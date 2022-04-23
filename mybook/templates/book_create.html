@@ -1,0 +1,65 @@
+{% extends "_base.html" %}
+{% load static %} 
+{% block title %}Create Book{% endblock %}
+{% block content %} 
+ 
+<div class="col-md-6">  
+    <form enctype="multipart/form-data" method="post" action="">{% csrf_token %}
+        <div class="row">
+            {% for field in form %}
+            {% if field == form.title or field == form.description %}
+            <div class="col-md-12 mb-4">
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+            {% endif %}
+            {% if not field == form.title and not field == form.description %}
+            <div class="col mb-4">
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <table class="table">
+            {{ bookfiles.management_form }}
+            {% for form in bookfiles.forms %}
+            {% if forloop.first %}
+            <thead>
+                <tr>
+                    {% for field in form.visible_fields %}
+                    <th>{{ field.label|capfirst }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            {% endif %}
+            <tr class="{% cycle 'row1' 'row2' %} formset_row-{{ bookfiles.prefix }}">
+                {% for field in form.visible_fields %}
+                <td>
+                    {# Include the hidden fields in the form #}
+                    {% if forloop.first %}
+                    {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                    {% endfor %}
+                    {% endif %}
+                    {{ field.errors.as_ul }}
+                    {{ field }}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit" class="btn btn-primary " value="Save">Save</button>
+    </form> 
+</div> 
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    $('.formset_row-{{ bookfiles.prefix }}').formset({
+        addText: 'add',
+        deleteText: 'remove',
+        prefix: '{{ bookfiles.prefix }}',
+    });
+</script>
+{% endblock %}

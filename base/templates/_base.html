@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "_head.html" %}
+    <title>{% block title %}My Book{% endblock %}</title>
+</head>
+<body>
+    <div class="container my-5">   
+        {% block content %}{% endblock %}  
+    </div> 
+    {% block scripts %}{% endblock %} 
+</body>
+</html>
