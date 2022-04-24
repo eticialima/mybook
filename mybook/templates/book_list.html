@@ -3,24 +3,33 @@
 {% block content %} 
 <p>Hello, all the books of <b>{{author.0.first_name}}</b></p>
 <p>Are you sure you want to add a new book ? </p>
-<a href="{% url 'book-add' pk %}">add a book</a>
-<a href="{% url 'author-list' %}">back author list</a>
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<a class="link-success" href="{% url 'book-add' pk %}"><i class="fas fa-book mx-2"></i>add a book</a>
+<a class="link-info" href="{% url 'author-list' %}"><i class="fas fa-arrow-left mx-2"></i>back author list</a>
+<div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
     {% for book in author_book %}
     <div class="col">
         <div class="card text-center h-100">
-            <div class="card-body">
-                <a href="{% url 'book-update' book.pk %}">edit</a>
-                <a href="{% url 'book-delete' book.pk %}">delete</a>
-                <h5 class="card-title">{{ book.title }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{book.pub_date}}</h6>
-                <p class="card-text">{{book.description}}</p>
-                {% for el in book.files.all %}
-                    <a class="" href="{{el.created_file}}" target="_blank">File {{forloop.counter}}</a>
-                {% empty %}
-                    <p>No book yet.</p>
-                {% endfor %}
+            {% if book.image_cap %}
+                <img src="{{book.image_cap.url}}" class="card-img-top" alt="..." height="350">
+            {% else %}
+                <img src="https://i.ibb.co/6t99F8z/sem-foto.jpg" class="card-img-top" alt="..." height="350">
+            {% endif %} 
+            <div class="card-body"> 
+                <div class="text-end">
+                    <a class="link-warning" href="{% url 'book-update' book.pk %}"><i class="fas fa-edit"></i></a>
+                    <a class="link-danger" href="{% url 'book-delete' book.pk %}"><i class="fas fa-trash"></i></a>
+                </div> 
+                <h5 class="card-title">{{ book.title }}</h5> 
+                <p class="card-text">{{book.description}}</p> 
+                <p class="card-text"><small class="text-muted">{{book.pub_data}}</small></p>
             </div>
+            <div>
+                {% for el in book.files.all %}
+                <a class="badge text-dark" href="{{el.created_file}}" target="_blank"><i class="fas fa-file mx-2"></i>{{el.name_file}}</a>
+                {% empty %}
+                <p>No book yet.</p>
+                {% endfor %}
+            </div> 
         </div>
     </div>
     {% endfor %}

@@ -1,9 +1,9 @@
 {% extends "_base.html" %}
 {% load static %} 
 {% block title %}Create Book{% endblock %}
-{% block content %} 
- 
+{% block content %}
 <div class="col-md-6">  
+    <p><b>Add new book</b></p>
     <form enctype="multipart/form-data" method="post" action="">{% csrf_token %}
         <div class="row">
             {% for field in form %}
@@ -21,7 +21,6 @@
             {% endif %}
             {% endfor %}
         </div>
-
         <table class="table">
             {{ bookfiles.management_form }}
             {% for form in bookfiles.forms %}

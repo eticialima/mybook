@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import transaction
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView 
@@ -51,7 +52,7 @@ class BookFilesCreate(CreateView):
     model = Book
     template_name = 'book_create.html' 
     form_class = BookForm 
-
+    
     def get_context_data(self, **kwargs):
         data = super(BookFilesCreate, self).get_context_data(**kwargs)
         if self.request.POST:
@@ -60,14 +61,17 @@ class BookFilesCreate(CreateView):
             data['bookfiles'] = BookFilesFormSet()
         return data
 
-    def form_valid(self, form):
+    def form_valid(self, form): 
+        author = Author.objects.filter(pk=self.kwargs.get('pk')) 
         context = self.get_context_data()
+        form = self.get_form()
         bookfiles = context['bookfiles']
         with transaction.atomic():
-            self.object = form.save()
-
-            if bookfiles.is_valid():
-                bookfiles.instance = self.object
+            form_model = form.save(commit=False) 
+            form_model.author = author[0] 
+            self.object = form.save() 
+            if bookfiles.is_valid(): 
+                bookfiles.instance = self.object 
                 bookfiles.save()
         return super(BookFilesCreate, self).form_valid(form)
     

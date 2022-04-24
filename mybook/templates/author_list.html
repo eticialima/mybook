@@ -2,9 +2,9 @@
 {% load static %}
 {% block title %}List Author{% endblock %}
 {% block content %}
- 
-<a class="my-2" href="{% url 'author-add' %}">add author</a> 
- 
+<p><b>Libraries Books</b></p>
+<p>The best library of the world.</p> 
+<a class="my-2" href="{% url 'author-add' %}"><i class="fas fa-user mx-2"></i>add author</a> 
 <table class="table">
     <thead>
         <tr>
@@ -21,11 +21,11 @@
             <td>{{el.first_name}} {{el.last_name}}</td>
             <td>{{el.email}}</td>  
             <td>
-                <a href="{% url 'book-list' el.id %}">view</a>
+                <a class="link-success" href="{% url 'book-list' el.id %}"><i class="fas fa-book"></i></a>
             </td>
             <td>
-                <a href="{% url 'author-update' el.id %}">update</a> 
-                <a href="{% url 'author-delete' el.id %}">delete</a>
+                <a class="link-warning" href="{% url 'author-update' el.id %}"><i class="fas fa-edit"></i></a> 
+                <a class="link-danger" href="{% url 'author-delete' el.id %}"><i class="fas fa-trash"></i></a>
             </td> 
         </tr> 
     </tbody>
